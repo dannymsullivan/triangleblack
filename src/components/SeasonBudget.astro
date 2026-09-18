@@ -1,0 +1,15 @@
+---
+import { budget, travelPerPlayer, totalPerPlayer, teamTotal, money } from '../data/season';
+---
+<div class="cost-card">
+  <span class="eyebrow">PER ATHLETE / ESTIMATED SEASON COST</span>
+  <div class="cost-total" id="cost-total">{money(totalPerPlayer)}</div>
+  <p>Dues + full uniform package + estimated food & travel</p>
+  <div class="cost-line"><span>Club dues · {budget.players}-player roster</span><strong>{money(budget.duesPerPlayer)}</strong></div>
+  <div class="cost-line"><span>Full national uniform package*</span><strong>{money(budget.uniformPerPlayer)}</strong></div>
+  <div class="cost-line"><span>Food & travel · {budget.travelTrips} trips × {money(budget.travelPerTrip)}</span><strong>{money(travelPerPlayer)}</strong></div>
+  <p class="fine">Six scheduled away tournaments + one national championship. The $1,500 estimate is per athlete/family trip, not per day, for food, transportation, and lodging. Actual costs vary. Local events have no travel allowance; the backup qualifier is excluded.</p>
+  <div class="team-budget"><span class="eyebrow">WHOLE TEAM / {budget.players} PLAYERS</span><strong id="team-total">{money(teamTotal)}</strong><p>{money(budget.duesPerPlayer * budget.players)} dues + {money(budget.uniformPerPlayer * budget.players)} uniforms + {money(travelPerPlayer * budget.players)} estimated food & travel</p></div>
+  <p class="fine">Planning budget, not a confirmed bill or fundraising target. Dues already include coach travel. *Uniform estimate excludes shipping and tax; returning players’ needs vary.</p>
+  <div class="cost-highlight">A $5,000 team sponsorship equals {money(5000 / budget.players)} per player, or {(5000 / teamTotal * 100).toFixed(1)}% of the estimated team budget.</div>
+</div>
