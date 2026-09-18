@@ -54,3 +54,7 @@ User requested 10 players and $1,500 in estimated food/travel per away trip. Six
 ## Social preview
 
 `public/social-share.png` is a 1730×909 PNG used in Open Graph and Twitter metadata on both pages. Generated with the built-in image generation tool, September18,2026. The final prompt is in `docs/social-image-prompt.md`. Netlify supplies the deployed site URL at build time. Preview the image directly at `/social-share.png`.
+
+## Club logo
+
+Official Triangle Volleyball logo copied unchanged from https://trianglevolleyball.org/wp-content/uploads/2024/04/TVB-rough.png for page headers and footers. Favicon copied from the official site’s https://trianglevolleyball.org/wp-content/uploads/2024/04/cropped-TVB-rough-32x32.png. User requested replacing custom badges with the real club logo on September18,2026. Parent-led proposal status remains.
