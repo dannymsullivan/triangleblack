@@ -1,4 +1,3 @@
-export const contact = { name: 'Parent sponsorship coordinator', email: '' };
 export const guide = 'https://trianglevolleyball.org/wp-content/uploads/2026/09/13s-Girls-Program-Guide-2027.pdf';
 export const events = [
   { month: 'JAN', days: '16–18', name: 'City of Oaks Challenge', city: 'Raleigh, NC', type: 'Home', start: '2027-01-16', end: '2027-01-19' },

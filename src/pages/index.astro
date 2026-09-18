@@ -1,6 +1,7 @@
 ---
-import { events, guide, levels, contact } from '../data/season';
+import { events, guide, levels } from '../data/season';
 import '../styles/global.css';
+import SocialMeta from '../components/SocialMeta.astro';
 import SeasonBudget from '../components/SeasonBudget.astro';
 import { budget, money } from '../data/season';
 ---
@@ -11,7 +12,7 @@ import { budget, money } from '../data/season';
   <title>Big dreams. One team. | Triangle 13 Black</title>
   <meta name="description" content="Help Triangle 13 Black National take on the 2027 volleyball season. Explore the tournament calendar, transparent costs, and proposed sponsorship opportunities." />
   <meta name="theme-color" content="#101214" /><meta name="robots" content="noindex, nofollow" />
-  <meta property="og:title" content="Big dreams. One team. | Triangle 13 Black" /><meta property="og:description" content="A hometown behind every away game. Support the 2027 season." />
+  <SocialMeta title="Big dreams. One team. | Triangle 13 Black" description="A hometown behind every away game. Support the 2027 season." />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 </head>
 <body>
@@ -37,7 +38,7 @@ import { budget, money } from '../data/season';
 <section class="wrap faq"><h2>A few good questions.</h2><details><summary>Where would sponsorship funds go?<span>+</span></summary><p>The proposal is to help with team families’ season costs, such as dues, uniforms, or travel. The parent coordinator and team will confirm how funds are collected, allocated, and reported before accepting any money.</p></details><details><summary>Can my business receive recognition?<span>+</span></summary><p>The proposed packages include recognition on this parent-organized page and team updates. Specific deliverables require team approval. Club social media, jerseys, and facility signage are not included.</p></details><details><summary>Is this an official Triangle fundraising page?<span>+</span></summary><p>No. This is a parent-led sponsorship proposal for 13 Black National. The published club guide supplies season facts; the proposed sponsor packages are separate and await coordination with the team and club.</p></details><details><summary>Can I make a payment here?<span>+</span></summary><p>Not yet. This page starts a sponsorship conversation. Payment instructions and the recipient will be confirmed by the coordinator after the team agrees on the fundraising plan.</p></details></section>
 </main>
 <footer class="wrap"><a href="#" class="brand"><span class="brand-symbol">13</span><span>TRIANGLE <b>13 BLACK / NATIONAL</b></span></a><p>A parent-led effort. A community-sized difference.<br />2026–27 season · Raleigh, North Carolina</p><a href={guide} target="_blank" rel="noreferrer">Official program guide ↗</a></footer>
-<dialog id="inquiry" aria-labelledby="inquiry-title"><button class="close" aria-label="Close sponsorship inquiry">×</button><p class="eyebrow">LET’S TEAM UP</p><h2 id="inquiry-title">Start a sponsorship conversation.</h2><p id="selected-tier"></p><form id="inquiry-form" data-email={contact.email}><label>Your name<input name="name" autocomplete="name" required maxlength="100" /></label><label>Business or organization<input name="business" autocomplete="organization" maxlength="150" /></label><label>Email<input type="email" name="email" autocomplete="email" required maxlength="200" /></label><label>What do you have in mind?<textarea name="message" rows="3" maxlength="2000"></textarea></label><button class="button" type="submit">{contact.email ? 'Prepare email ↗' : 'Download my inquiry ↓'}</button><p class="fine">{contact.email ? 'Opens your email app for review. Nothing is sent automatically.' : 'Sponsor contact is being finalized. Download your inquiry to share with the parent who gave you this page. Nothing is submitted or stored online.'}</p><p id="inquiry-status" role="status"></p></form></dialog>
+<dialog id="inquiry" aria-labelledby="inquiry-title"><button class="close" aria-label="Close sponsorship inquiry">×</button><p class="eyebrow">LET’S TEAM UP</p><h2 id="inquiry-title">Start a sponsorship conversation.</h2><p id="selected-tier"></p><form id="inquiry-form" name="sponsorship" method="POST" action="/thank-you/" data-netlify="true" netlify-honeypot="bot-field"><input type="hidden" name="form-name" value="sponsorship" /><input type="hidden" name="sponsorship-level" id="sponsorship-level" value="General inquiry" /><p hidden><label>Leave this empty<input name="bot-field" tabindex="-1" autocomplete="off" /></label></p><label>Your name<input name="name" autocomplete="name" required maxlength="100" /></label><label>Business or organization<input name="business" autocomplete="organization" maxlength="150" /></label><label>Email<input type="email" name="email" autocomplete="email" required maxlength="200" /></label><label>What do you have in mind?<textarea name="message" rows="3" maxlength="2000"></textarea></label><button class="button" type="submit">Send sponsorship inquiry ↗</button><p class="fine">Your details will be shared with the parent sponsorship coordinator through Netlify Forms to respond to your inquiry. No payment is collected.</p></form></dialog>
 <script>
   const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
   buttons.forEach(button => button.addEventListener('click', () => {
@@ -48,15 +49,9 @@ import { budget, money } from '../data/season';
   }));
   const dialog = document.querySelector<HTMLDialogElement>('#inquiry')!;
   let tier = '';
-  document.querySelectorAll<HTMLButtonElement>('[data-tier]').forEach(button => button.addEventListener('click', () => {tier = button.dataset.tier! + (button.dataset.amount ? ` — $${Number(button.dataset.amount).toLocaleString('en-US')}` : ''); document.querySelector('#selected-tier')!.textContent = tier; document.querySelector('#inquiry-status')!.textContent = ''; dialog.showModal();}));
+  document.querySelectorAll<HTMLButtonElement>('[data-tier]').forEach(button => button.addEventListener('click', () => {tier = button.dataset.tier! + (button.dataset.amount ? ` — $${Number(button.dataset.amount).toLocaleString('en-US')}` : ''); document.querySelector('#selected-tier')!.textContent = tier; document.querySelector<HTMLInputElement>('#sponsorship-level')!.value = tier; dialog.showModal();}));
   dialog.querySelector('.close')!.addEventListener('click', () => dialog.close());
   dialog.addEventListener('click', event => {if(event.target === dialog) {const rect=dialog.getBoundingClientRect(); if(event.clientX<rect.left || event.clientX>rect.right || event.clientY<rect.top || event.clientY>rect.bottom) dialog.close();}});
-  document.querySelector<HTMLFormElement>('#inquiry-form')!.addEventListener('submit', event => {
-    event.preventDefault(); const form = event.currentTarget as HTMLFormElement; const data = new FormData(form);
-    const text = `Triangle 13 Black — 2027 sponsorship inquiry\n\nInterest: ${tier}\nName: ${data.get('name')}\nBusiness: ${data.get('business')}\nEmail: ${data.get('email')}\n\n${data.get('message')}\n\nProposed sponsorship, subject to agreement with the team.\n`;
-    if(form.dataset.email) { window.location.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent('Triangle 13 Black sponsorship inquiry')}&body=${encodeURIComponent(text)}`; document.querySelector('#inquiry-status')!.textContent = 'Email draft prepared. Review and send it from your email app.'; }
-    else {const url = URL.createObjectURL(new Blob([text], {type:'text/plain;charset=utf-8'})); const a=document.createElement('a');a.href=url;a.download='triangle-13-black-sponsor-inquiry.txt';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);document.querySelector('#inquiry-status')!.textContent='Inquiry downloaded. Share the file with your parent contact; it has not been sent.';}
-  });
   document.querySelector('#print')!.addEventListener('click', () => window.print());
 </script>
 </body></html>

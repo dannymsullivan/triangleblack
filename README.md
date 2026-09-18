@@ -13,15 +13,17 @@ Open http://localhost:4321. `npm run build` runs Astro type checking and produce
 
 ## Pages
 
-- `/`: whole-team story, sourced club context, tournament filters, calendar download, season budget, proposed local and corporate sponsor packages, inquiry download, and print styles.
+- `/`: whole-team story, sourced club context, tournament filters, calendar download, season budget, proposed local and corporate sponsor packages, Netlify sponsorship form, and print styles.
 - `/pitch/gametime`: a separate printable Gametime proposal, with a $5,000 starting ask, $2,500 option, and custom experience/matching ideas. Gametime is a prospective sponsor only.
 - `/season.ics`: eight planned tournaments; intentionally excludes the backup qualifier and undecided championship. Dates are tentative all-day competition dates, with exclusive end dates.
 
 ## Content and contact
 
-Edit `src/data/season.ts` for contact email, events, and local sponsor tiers. When the contact email is blank, the dialog downloads an inquiry text file and explicitly says nothing is submitted. When set, it prepares a mailto draft for the sponsor to review/send. This static site stores no inquiries and accepts no payments.
+Edit `src/data/season.ts` for events, budget assumptions, and sponsor tiers. The static HTML form named `sponsorship` posts to Netlify Forms with the selected sponsorship level, name, business, email, and message. It uses a honeypot, browser validation, and `/thank-you/` confirmation. No payment is collected.
 
-The page currently labels packages as proposals and uses noindex. Before public launch: finalize the parent contact, agreed team/club fundraising recipient and allocation, recognition permissions, and actual benefits. Replace proposal wording and remove noindex only after those facts are confirmed. Add a production `site` URL/canonical and real social preview when a domain is chosen. Team photography can be added when an approved photo is available; the current hero is original SVG/CSS artwork, not a representation of real players.
+Enable form detection in the Netlify site's Forms settings before deploying. After deployment, confirm the `sponsorship` form is listed, send a controlled inquiry, and verify it in Netlify submissions. Configure email notifications there if desired. Local Astro does not provide Netlify's collection service; the browser test intercepts the POST to verify serialization and confirmation without sending a real inquiry. Live collection remains unverified until a Netlify site is deployed.
+
+The page currently labels packages as proposals and uses noindex. Before public launch: finalize the parent contact, agreed team/club fundraising recipient and allocation, recognition permissions, and actual benefits. Replace proposal wording and remove noindex only after those facts are confirmed. The social image is included. Astro uses `SITE_URL` or Netlify’s `URL` for absolute sharing URLs; set SITE_URL if a custom canonical domain is needed. Team photography can be added when an approved photo is available; the current hero is original SVG/CSS artwork, not a representation of real players.
 
 ## Source facts
 
@@ -39,12 +41,16 @@ With the dev server on port 4321:
 node scripts/verify.mjs
 ```
 
-Checks both pages at 320/390/768/1440px, event filters, fixed 10-player season budget and per-trip estimates, sponsor inquiry download, keyboard dialog close, eight-event calendar, and browser errors. Screenshots go to ignored `artifacts/`. Run `npx playwright install chromium` if a browser is missing.
+Checks both pages at 320/390/768/1440px, event filters, fixed 10-player season budget and per-trip estimates, sponsor Netlify sponsorship form, keyboard dialog close, eight-event calendar, and browser errors. Screenshots go to ignored `artifacts/`. Run `npx playwright install chromium` if a browser is missing.
 
 ## Hosting
 
-Static Astro: build command `npm run build`, output directory `dist`. No adapter or server required. No deployment or external outreach has been performed.
+Static Astro: build command `npm run build`, output directory `dist`. No adapter or server required. netlify.toml sets the build and output folder and Node22. No deployment or external outreach has been performed.
 
 ## Travel budget — updated September 18, 2026
 
 User requested 10 players and $1,500 in estimated food/travel per away trip. Six scheduled away tournaments plus one national championship = seven trips. Per athlete: $6,400 dues + $380 uniforms + $10,500 travel = $17,280. Team of10: $172,800. Backup Sunshine qualifier is labeled/excluded; local tournaments have no travel allowance. Estimate includes food, transportation, lodging; per trip, not per day. Shared SeasonBudget component keeps both pages aligned.
+
+## Social preview
+
+`public/social-share.png` is a 1730×909 PNG used in Open Graph and Twitter metadata on both pages. Generated with the built-in image generation tool, September18,2026. The final prompt is in `docs/social-image-prompt.md`. Netlify supplies the deployed site URL at build time. Preview the image directly at `/social-share.png`.
